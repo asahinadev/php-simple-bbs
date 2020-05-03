@@ -1,0 +1,32 @@
+version: "3"
+
+# サービス設定
+services:
+
+  db:
+    image: mysql:5.7.30
+    environment:
+    - MYSQL_ROOT_PASSWORD=root
+
+  # phpmyadmin
+  pma:
+    image: phpmyadmin/phpmyadmin
+    ports:
+    - 30003:80
+    links:
+    - db
+    environment:
+    - PMA_ARBITRARY=1
+    - PMA_USER=root
+    - PMA_PASSWORD=root
+
+  # php
+  web:
+    build: ./web
+    ports:
+    - 30000:80
+    volumes:
+    - ./html:/var/www/html
+    - ./web/ServerName.conf:/etc/httpd/conf.d/ServerName.conf
+    links:
+    - db

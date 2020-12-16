@@ -1,32 +1,40 @@
-version: "3"
+version: "3.4"
 
 # サービス設定
 services:
 
+  # database (mysql)
   db:
-    image: mysql:5.7.30
-    environment:
-    - MYSQL_ROOT_PASSWORD=root
+    restart:  on-failure:10
+    build:    ./docker/db
+    env_file: ./docker/db/.env
 
-  # phpmyadmin
-  pma:
-    image: phpmyadmin/phpmyadmin
-    ports:
-    - 30003:80
-    links:
-    - db
-    environment:
-    - PMA_ARBITRARY=1
-    - PMA_USER=root
-    - PMA_PASSWORD=root
+  # adminer (database manager)
+  adminer:
+    restart:   on-failure:10
+    build:     ./docker/adminer
+    env_file:  ./docker/adminer/.env
+    ports:      [ 9105:8080 ]
+    depends_on: [ db ]
 
-  # php
-  web:
-    build: ./web
-    ports:
-    - 30000:80
+  # php-fpm
+  php:
+    restart:  on-failure:10
+    build:    ./docker/php
+    env_file: ./docker/php/.env
+    depends_on: [ db ]
     volumes:
-    - ./html:/var/www/html
-    - ./web/ServerName.conf:/etc/httpd/conf.d/ServerName.conf
-    links:
-    - db
+      - ./html:/var/www/html
+      - ./docker/php/conf:/usr/local/etc/php-fpm.d
+
+  web:
+    restart:    on-failure:10
+    build:      ./docker/web
+    env_file:   ./docker/web/.env
+    ports:      [ 9100:80 ]
+    depends_on: [ php ]
+    volumes:
+      - ./html:/var/www/html
+      - ./docker/web/conf:/etc/nginx/conf.d
+
+

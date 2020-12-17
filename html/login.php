@@ -1,17 +1,17 @@
 <?php
-require('dbconnect.php');
+require('./include/dbconnect.php');
 
 session_start();
 
 if ($_COOKIE['email'] != '') {
-	$_POST['email'] = $_COOKIE['email'];
-	$_POST['password'] = $_COOKIE['password'];
-	$_POST['save'] = 'on';
+  $_POST['email'] = $_COOKIE['email'];
+  $_POST['password'] = $_COOKIE['password'];
+  $_POST['save'] = 'on';
 }
 
 if (!empty($_POST)) {
-	// ログインの処理
-	if ($_POST['email'] != '' && $_POST['password'] != '') {
+  // ログインの処理
+  if ($_POST['email'] != '' && $_POST['password'] != '') {
     $login = $db->prepare('SELECT * FROM members WHERE email=? AND password=?');
     $login->execute(array(
       $_POST['email'],
@@ -20,23 +20,23 @@ if (!empty($_POST)) {
     $member = $login->fetch();
 
     if ($member) {
-			// ログイン成功
-			$_SESSION['id'] = $member['id'];
-			$_SESSION['time'] = time();
+      // ログイン成功
+      $_SESSION['id'] = $member['id'];
+      $_SESSION['time'] = time();
 
-			// ログイン情報を記録する
-			if ($_POST['save'] == 'on') {
-				setcookie('email', $_POST['email'], time()+60*60*24*14);
-				setcookie('password', $_POST['password'], time()+60*60*24*14);
-			}
+      // ログイン情報を記録する
+      if ($_POST['save'] == 'on') {
+        setcookie('email', $_POST['email'], time()+60*60*24*14);
+        setcookie('password', $_POST['password'], time()+60*60*24*14);
+      }
 
-			header('Location: index.php'); exit();
-		} else {
-			$error['login'] = 'failed';
-		}
-	} else {
-		$error['login'] = 'blank';
-	}
+      header('Location: index.php'); exit();
+    } else {
+      $error['login'] = 'failed';
+    }
+  } else {
+    $error['login'] = 'blank';
+  }
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

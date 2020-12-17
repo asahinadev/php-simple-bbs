@@ -8,31 +8,59 @@ services:
     restart:  on-failure:10
     build:    ./docker/db
     env_file: ./docker/db/.env
+    command: "--general-log=true  --general-log-file=/dev/stdout"
+    volumes:
+      - ./docker/db/migrations:/docker-entrypoint-initdb.d
+
+  # redis (session)
+  redis:
+    restart:  on-failure:10
+    build:    ./docker/redis
+    env_file: ./docker/redis/.env
 
   # adminer (database manager)
   adminer:
-    restart:   on-failure:10
-    build:     ./docker/adminer
-    env_file:  ./docker/adminer/.env
-    ports:      [ 9105:8080 ]
-    depends_on: [ db ]
+    restart:  on-failure:10
+    build:    ./docker/adminer
+    env_file: ./docker/adminer/.env
+    ports:
+      - 9105:8080
+    depends_on:
+      - db
 
   # php-fpm
-  php:
+  php_primary:
     restart:  on-failure:10
     build:    ./docker/php
     env_file: ./docker/php/.env
-    depends_on: [ db ]
+    depends_on:
+      - db
+      - redis
     volumes:
       - ./html:/var/www/html
       - ./docker/php/conf:/usr/local/etc/php-fpm.d
 
+  php_secondary:
+    restart:  on-failure:10
+    build:    ./docker/php
+    env_file: ./docker/php/.env
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./html:/var/www/html
+      - ./docker/php/conf:/usr/local/etc/php-fpm.d
+
+  # httpd
   web:
     restart:    on-failure:10
     build:      ./docker/web
     env_file:   ./docker/web/.env
-    ports:      [ 9100:80 ]
-    depends_on: [ php ]
+    ports:
+      - 9100:80
+    depends_on:
+      - php_primary
+      - php_secondary
     volumes:
       - ./html:/var/www/html
       - ./docker/web/conf:/etc/nginx/conf.d

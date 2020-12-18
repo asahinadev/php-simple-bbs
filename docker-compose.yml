@@ -9,6 +9,8 @@ services:
     build:    ./docker/db
     env_file: ./docker/db/.env
     command: "--general-log=true  --general-log-file=/dev/stdout"
+    ports: 
+      - 3306:3306
     volumes:
       - ./docker/db/migrations:/docker-entrypoint-initdb.d
 
@@ -37,7 +39,7 @@ services:
       - db
       - redis
     volumes:
-      - ./html:/var/www/html
+      - ./:/var/www/html
       - ./docker/php/conf:/usr/local/etc/php-fpm.d
 
   php_secondary:
@@ -48,7 +50,7 @@ services:
       - db
       - redis
     volumes:
-      - ./html:/var/www/html
+      - ./:/var/www/html
       - ./docker/php/conf:/usr/local/etc/php-fpm.d
 
   # httpd
@@ -62,7 +64,7 @@ services:
       - php_primary
       - php_secondary
     volumes:
-      - ./html:/var/www/html
+      - ./:/var/www/html
       - ./docker/web/conf:/etc/nginx/conf.d
 
 

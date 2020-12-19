@@ -8,11 +8,11 @@ services:
     restart:  on-failure:10
     build:    ./docker/db
     env_file: ./docker/db/.env
-    command: "--general-log=true  --general-log-file=/dev/stdout"
     ports: 
       - 3306:3306
     volumes:
       - ./docker/db/migrations:/docker-entrypoint-initdb.d
+      - ./docker/db/conf:/etc/mysql/mysql.conf.d
 
   # redis (session)
   redis:
@@ -31,24 +31,13 @@ services:
       - db
 
   # php-fpm
-  php_primary:
+  php:
     restart:  on-failure:10
     build:    ./docker/php
     env_file: ./docker/php/.env
+    command: "sh -C /var/www/html/run.sh"
     depends_on:
       - db
-      - redis
-    volumes:
-      - ./:/var/www/html
-      - ./docker/php/conf:/usr/local/etc/php-fpm.d
-
-  php_secondary:
-    restart:  on-failure:10
-    build:    ./docker/php
-    env_file: ./docker/php/.env
-    depends_on:
-      - db
-      - redis
     volumes:
       - ./:/var/www/html
       - ./docker/php/conf:/usr/local/etc/php-fpm.d
@@ -61,8 +50,7 @@ services:
     ports:
       - 9100:80
     depends_on:
-      - php_primary
-      - php_secondary
+      - php
     volumes:
       - ./:/var/www/html
       - ./docker/web/conf:/etc/nginx/conf.d

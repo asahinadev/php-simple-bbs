@@ -1,0 +1,1 @@
+docker-compose.exe exec db bash

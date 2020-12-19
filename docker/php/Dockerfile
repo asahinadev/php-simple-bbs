@@ -15,7 +15,6 @@ RUN \
   apt-get -y install libicu-dev &&\
   docker-php-ext-install intl
 
-
 # 永続化
 RUN \
   docker-php-ext-install pdo_mysql mysqli

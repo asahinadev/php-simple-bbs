@@ -7,51 +7,34 @@ use App\View\AppView;
  * @var $user User
  * @var $this AppView
  */
+?>
+<div>
 
-$list_options = [
-    "class" => "nav nav-tabs"
-];
-$item_options = [
-    "class" => "nav-item"
-];
-$link_options = [
-    "class" => "nav-link"
-];
-$link__active_options = [
-    "class" => "nav-link active"
-];
-
+  <?php
 $list = [
-
-    $this->Html->link(__("List"), [
-        "action" => "index"
-    ], $link_options),
-
-    $this->Html->link(__("Create"), [
-        "action" => "add"
-    ], $link__active_options),
+    $this->App->navItem(__("List"), "Users", "index", "index"),
+    $this->App->navItem(__("Create"), "Users", "add", "add"),
 ];
+
+echo $this->App->tabs($list);
 
 ?>
-
-  <?=$this->Html->nestedList($list, $list_options, $item_options);?>
-
 <div class="w-75 mx-auto mt-1">
-  <div class="card">
+    <div class="card">
 <?=$this->Form->create($user) ?>
   <div class="card-header">
     <?= __("User Create")?>
   </div>
-    <div class="card-body">
-      <fieldset>
-<?=$this->Form->control("username") ?>
-<?=$this->Form->control("email") ?>
-<?=$this->Form->control("password") ?>
-      </fieldset>
-<?=$this->Form->submit(__("Save"));?>
+      <div class="card-body">
+<?php
+echo $this->Form->control("username");
+echo $this->Form->control("email");
+echo $this->Form->control("password");
+echo $this->Form->submit(__("Save"));
+?>
     </div>
-    <div class="card-footer text-muted"></div>
-  </div>
+      <div class="card-footer text-muted"></div>
+    </div>
     <?=$this->Form->end()?>
     </div>
 </div>

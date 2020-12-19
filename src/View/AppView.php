@@ -17,7 +17,6 @@ declare(strict_types = 1);
 namespace App\View;
 
 use Cake\View\View;
-use BootstrapUI\View\UIViewTrait;
 
 /**
  * Application View
@@ -25,6 +24,8 @@ use BootstrapUI\View\UIViewTrait;
  * Your application's default view class
  *
  * @link https://book.cakephp.org/4/en/views.html#the-app-view
+ *
+ * @property AppHelpe $App
  */
 class AppView extends View
 {
@@ -58,6 +59,9 @@ class AppView extends View
             'Breadcrumbs' => [
                 'className' => 'BootstrapUI.Breadcrumbs'
             ],
+            'App' => [
+                "className" => "App.App"
+            ]
         ];
 
         $this->helpers = array_merge($helpers, $this->helpers);

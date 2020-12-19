@@ -153,8 +153,8 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         ]);
 
         $fields = [
-            IdentifierInterface::CREDENTIAL_USERNAME => 'username',
-            IdentifierInterface::CREDENTIAL_PASSWORD => 'password'
+            "username" => 'username',
+            "password" => 'password'
         ];
 
         // Load the authenticators. Session should be first.
@@ -165,7 +165,13 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         // $service->loadIdentifier('Authentication.Password', compact('fields'/*, 'resolver', 'passwordHasher'*/));
         $service->loadIdentifier('Authentication.Password',
             [
-                'fields' => $fields,
+                'fields' => [
+                    "username" => [
+                        'username',
+                        'email'
+                    ],
+                    "password" => 'password'
+                ],
                 'resolver' => [
                     'className' => 'Authentication.Orm',
                     'finder' => 'active',

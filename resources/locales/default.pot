@@ -1,0 +1,216 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2020-12-19 23:32+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: Controller/PostsController.php:70
+#: Controller/PostsController.php:117
+msgid "The post has been saved."
+msgstr ""
+
+#: Controller/PostsController.php:76
+#: Controller/PostsController.php:123
+msgid "The post could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/PostsController.php:104
+msgid "Unauthorized Operations."
+msgstr ""
+
+#: Controller/PostsController.php:149
+msgid "The post has been deleted."
+msgstr ""
+
+#: Controller/PostsController.php:152
+msgid "The post could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/UsersController.php:84
+#: Controller/UsersController.php:117
+msgid "The user has been saved."
+msgstr ""
+
+#: Controller/UsersController.php:90
+#: Controller/UsersController.php:123
+msgid "The user could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/UsersController.php:146
+msgid "The user has been deleted."
+msgstr ""
+
+#: Controller/UsersController.php:149
+msgid "The user could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/UsersController.php:179
+msgid "Invalid username or password"
+msgstr ""
+
+#: Posts/add.php:15
+#: Posts/edit.php:15
+#: Posts/index.php:15
+#: Posts/view.php:15
+#: Users/add.php:15
+#: Users/edit.php:15
+#: Users/index.php:15
+#: Users/view.php:15
+msgid "List"
+msgstr ""
+
+#: Posts/add.php:16
+#: Posts/edit.php:16
+#: Posts/index.php:16
+#: Posts/view.php:16
+#: Users/add.php:16
+#: Users/edit.php:16
+#: Users/index.php:16
+#: Users/view.php:16
+msgid "Create"
+msgstr ""
+
+#: Posts/add.php:26
+msgid "Post Create"
+msgstr ""
+
+#: Posts/add.php:31
+#: Posts/edit.php:38
+#: Users/add.php:33
+#: Users/edit.php:52
+msgid "Save"
+msgstr ""
+
+#: Posts/edit.php:17
+#: Posts/view.php:17
+#: Users/edit.php:17
+#: Users/view.php:17
+msgid "Edit"
+msgstr ""
+
+#: Posts/edit.php:18
+#: Posts/view.php:18
+#: Users/edit.php:18
+#: Users/view.php:18
+msgid "View"
+msgstr ""
+
+#: Posts/edit.php:28
+msgid "Post Edit"
+msgstr ""
+
+#: Posts/edit.php:34
+#: Posts/view.php:37
+msgid "Creator"
+msgstr ""
+
+#: Posts/index.php:26
+#: Users/edit.php:33
+#: Users/index.php:26
+#: Users/view.php:30
+msgid "Id"
+msgstr ""
+
+#: Posts/index.php:27
+#: Posts/view.php:32
+msgid "Text"
+msgstr ""
+
+#: Posts/index.php:28
+#: Users/index.php:27
+#: Users/view.php:35
+#: Users/view.php:45
+msgid "Username"
+msgstr ""
+
+#: Posts/index.php:29
+#: Users/index.php:30
+msgid "Action"
+msgstr ""
+
+#: Posts/view.php:27
+msgid "Post View"
+msgstr ""
+
+#: Users/add.php:26
+msgid "User Create"
+msgstr ""
+
+#: Users/edit.php:28
+msgid "User Modify"
+msgstr ""
+
+#: Users/edit.php:42
+#: Users/index.php:28
+#: Users/view.php:50
+msgid "Created"
+msgstr ""
+
+#: Users/edit.php:48
+#: Users/index.php:29
+#: Users/view.php:55
+msgid "Modified"
+msgstr ""
+
+#: Users/login.php:16
+msgid "User Login"
+msgstr ""
+
+#: Users/login.php:23
+msgid "Login"
+msgstr ""
+
+#: Users/login.php:26
+msgid "Signup"
+msgstr ""
+
+#: Users/login.php:29
+msgid "Password Forgot"
+msgstr ""
+
+#: Users/view.php:26
+msgid "User View"
+msgstr ""
+
+#: Users/view.php:40
+msgid "Email"
+msgstr ""
+
+#: Users/view.php:46
+msgid "Hide for security"
+msgstr ""
+
+#: layout/default.php:42
+#: layout/error.php:40
+msgid "APP NAME"
+msgstr ""
+
+#: layout/default.php:51
+#: layout/error.php:49
+msgid "Home"
+msgstr ""
+
+#: layout/default.php:52
+#: layout/error.php:50
+msgid "Users"
+msgstr ""
+
+#: layout/default.php:53
+#: layout/error.php:51
+msgid "Posts"
+msgstr ""
+
+#: layout/error.php:64
+msgid "Back"
+msgstr ""
+

@@ -33,10 +33,8 @@ echo $this->App->tabs($list);
       <?php foreach ($posts as $post):?>
       <tr>
           <td><?= $post->id?></td>
-          <td><?= h($post->text)?></td>
+          <td><?= nl2br(h($post->text))?></td>
           <td><?=$this->Html->link($post->user->username, ["controller" => "Users","action" => "view",$post->user_id])?></td>
-          <td><?= $this->Time->format($post->created, "Y/M/d")?></td>
-          <td><?= $this->Time->format($post->modified, "Y/M/d")?></td>
           <td>
               <?= $this->Html->link("E", [ "action"=>"edit", $post->id],["class"=>"btn btn-primary"])?>
               <?= $this->Html->link("V", [ "action"=>"view", $post->id],["class"=>"btn btn-info"])?>

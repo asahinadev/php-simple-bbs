@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Authentication\IdentityInterface;
 
 /**
  * User Entity
@@ -16,7 +17,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Post[] $posts
  */
-class User extends Entity
+class User extends Entity implements IdentityInterface
 {
 
     /**
@@ -45,5 +46,19 @@ class User extends Entity
     protected $_hidden = [
         'password',
     ];
+
+    public function getOriginalData()
+    {
+
+        return $this;
+
+    }
+
+    public function getIdentifier()
+    {
+
+        return $this->id;
+
+    }
 
 }

@@ -62,6 +62,10 @@ class PostsController extends AppController
         $post = $this->Posts->newEmptyEntity();
         if ($this->request->is('post')) {
             $post = $this->Posts->patchEntity($post, $this->request->getData());
+
+            // 登録者のIDを設定
+            $post->user_id = $this->getIdentityData("id");
+
             if ($this->Posts->save($post)) {
                 $this->Flash->success(__('The post has been saved.'));
 
@@ -90,8 +94,19 @@ class PostsController extends AppController
     {
 
         $post = $this->Posts->get($id, [
-            'contain' => [],
+            'contain' => [
+                "Users"
+            ],
         ]);
+
+        //
+        if ($post->user_id != $this->getIdentityData("id")) {
+            $this->Flash->error(__('Unauthorized Operations.'));
+            return $this->redirect([
+                'action' => 'index'
+            ]);
+        }
+
         if ($this->request->is([
             'patch',
             'post',

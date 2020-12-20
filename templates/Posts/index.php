@@ -36,9 +36,13 @@ echo $this->App->tabs($list);
           <td><?= nl2br(h($post->text))?></td>
           <td><?=$this->Html->link($post->user->username, ["controller" => "Users","action" => "view",$post->user_id])?></td>
           <td>
-              <?= $this->Html->link("E", [ "action"=>"edit", $post->id],["class"=>"btn btn-primary"])?>
-              <?= $this->Html->link("V", [ "action"=>"view", $post->id],["class"=>"btn btn-info"])?>
-              <?=$this->Form->postLink("D", ["action" => "delete",$post->id], ["class"=>"btn btn-danger","confirm" => sprintf("#%d 削除しますか？", $post->id)])?>
+            <?php if ($authUserId == $post->user_id) {?>
+              <?=$this->Html->link("E", ["action" => "edit",$post->id], ["class" => "btn btn-primary"]);?>
+            <?php }?>
+            <?=$this->Html->link("V", ["action" => "view",$post->id], ["class" => "btn btn-info"]);?>
+            <?php if ($authUserId == $post->user_id) {?>
+              <?=$this->Form->postLink("D", ["action" => "delete",$post->id],["class" => "btn btn-danger","confirm" => sprintf(__("Do you want to delete this information? #%d"), $post->id)]);?>
+            <?php }?>
             </td>
         </tr>
       <?php endforeach;?>

@@ -38,11 +38,15 @@ echo $this->App->tabs($list);
           <td><?= $this->Time->format($user->created, "Y/M/d")?></td>
           <td><?= $this->Time->format($user->modified, "Y/M/d")?></td>
           <td>
-          <?= $this->html->link("M", "mailto:". $user->email,["class"=>"btn btn-warning"])?>
-          <?= $this->Html->link("E", [ "action"=>"edit", $user->id],["class"=>"btn btn-primary"])?>
-          <?= $this->Html->link("V", [ "action"=>"view", $user->id],["class"=>"btn btn-info"])?>
-          <?=$this->Form->postLink("D", ["action" => "delete",$user->id], ["class"=>"btn btn-danger","confirm" => sprintf("#%d 削除しますか？", $user->id)])?>
-        </td>
+            <?=$this->html->link("M", "mailto:" . $user->email, ["class" => "btn btn-warning"]);?>
+            <?php if ($authUserId == $user->id) {?>
+              <?=$this->Html->link("E", ["action" => "edit",$user->id], ["class" => "btn btn-primary"]);?>
+            <?php }?>
+            <?=$this->Html->link("V", ["action" => "view",$user->id], ["class" => "btn btn-info"]);?>
+            <?php if ($authUserId == $user->id) {?>
+              <?=$this->Form->postLink("D", ["action" => "delete",$user->id],["class" => "btn btn-danger","confirm" => sprintf(__("Do you want to delete this information? #%d"), $user->id)]);?>
+            <?php }?>
+            </td>
         </tr>
       <?php endforeach;?>
     </tbody>

@@ -17,8 +17,10 @@ declare(strict_types = 1);
  */
 namespace App\Controller;
 
-use Cake\Controller\Controller;
 use App\Model\Entity\User;
+use Cake\Controller\Controller;
+use Cake\Event\EventInterface;
+use Psr\Log\LogLevel;
 
 /**
  * Application Controller
@@ -32,6 +34,7 @@ use App\Model\Entity\User;
  */
 class AppController extends Controller
 {
+
 
     /**
      * Initialization hook method.
@@ -60,6 +63,34 @@ class AppController extends Controller
         // $this->loadComponent('FormProtection');
     }
 
+    /**
+     * Called before the controller action.
+     * You can use this method to configure and customize components
+     * or perform logic that needs to happen before each controller action.
+     *
+     * @param \Cake\Event\EventInterface $event
+     *            An Event instance
+     * @return \Cake\Http\Response|null|void
+     * @link https://book.cakephp.org/4/en/controllers.html#request-life-cycle-callbacks
+     */
+    public function beforeFilter(EventInterface $event)
+    {
+
+        $authUser = false;
+        $authUserId = false;
+
+        try {
+            $authUser = $this->getIdentity();
+            $authUserId = $this->getIdentityData("id");
+        }
+        catch (\RuntimeException $e) {
+            $this->log($e->getMessage(), LogLevel::DEBUG);
+        }
+
+        $this->set(compact("authUser", "authUserId"));
+
+    }
+
     protected function getIdentityData($path)
     {
 
@@ -71,7 +102,7 @@ class AppController extends Controller
      *
      * @return User
      */
-    protected function getIdentity(): User
+    protected function getIdentity(): ?User
     {
 
         return $this->Authentication->getIdentity();

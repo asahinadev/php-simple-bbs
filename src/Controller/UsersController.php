@@ -26,6 +26,8 @@ class UsersController extends AppController
     public function beforeFilter(EventInterface $event)
     {
 
+        parent::beforeFilter($event);
+
         // ユーザー登録・ログインはすべて許可
         $this->Authentication->allowUnauthenticated([
             'login',
@@ -107,6 +109,15 @@ class UsersController extends AppController
         $user = $this->Users->get($id, [
             'contain' => [],
         ]);
+
+        //
+        if ($user->id != $this->getIdentityData("id")) {
+            $this->Flash->error(__('Unauthorized Operations.'));
+            return $this->redirect([
+                'action' => 'index'
+            ]);
+        }
+
         if ($this->request->is([
             'patch',
             'post',
@@ -142,6 +153,15 @@ class UsersController extends AppController
             'delete'
         ]);
         $user = $this->Users->get($id);
+
+        //
+        if ($user->id != $this->getIdentityData("id")) {
+            $this->Flash->error(__('Unauthorized Operations.'));
+            return $this->redirect([
+                'action' => 'index'
+            ]);
+        }
+
         if ($this->Users->delete($user)) {
             $this->Flash->success(__('The user has been deleted.'));
         }
@@ -158,8 +178,6 @@ class UsersController extends AppController
     /**
      * Login method
      *
-     * @param string|null $id
-     *            User id.
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -167,7 +185,6 @@ class UsersController extends AppController
     {
 
         $user = $this->Users->newEmptyEntity();
-
 
         $result = $this->Authentication->getResult();
         // If the user is logged in send them away.
@@ -180,6 +197,19 @@ class UsersController extends AppController
         }
 
         $this->set(compact('user'));
+
+    }
+
+    public function logout()
+    {
+
+        $this->Authentication->logout();
+
+        $this->Flash->success(__('logged out'));
+
+        return $this->redirect([
+            'action' => 'login'
+        ]);
 
     }
 

@@ -25,13 +25,15 @@ class AppHelper extends Helper
      */
     protected $_defaultConfig = [];
 
-    public function navLink($controller, $template = false)
+    public function navLink($controller, $template = false, $disable = false)
     {
 
         $view = $this->getView();
 
-
-        if (strcmp($view->getName(), $controller) === 0) {
+        if ($disable) {
+            return "nav-link disabled";
+        }
+        else if (strcmp($view->getName(), $controller) === 0) {
             if ($template === false) {
                 return "nav-link active";
             }
@@ -77,7 +79,7 @@ class AppHelper extends Helper
 
     }
 
-    public function navItem($title, $controller, $action, $template = false, $path = false, $id = false)
+    public function navItem($title, $controller, $action, $template = false, $path = false, $id = false, $disable = false)
     {
 
         if ($path === false) {
@@ -88,7 +90,7 @@ class AppHelper extends Helper
             }
         }
 
-        $class = $this->navLink($controller, $template);
+        $class = $this->navLink($controller, $template, $disable);
         return $this->Html->link($title, $path, compact("class"));
 
     }

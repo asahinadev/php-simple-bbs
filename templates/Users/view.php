@@ -14,7 +14,7 @@ use App\View\AppView;
 $list = [
     $this->App->navItem(__("List"), "Users", "index", "index"),
     $this->App->navItem(__("Create"), "Users", "add", "add"),
-    $this->App->navItem(__("Edit"), "Users", "edit", "edit", false, $user->id),
+    $this->App->navItem(__("Edit"), "Users", "edit", "edit", false, $user->id, $authUserId != $user->id),
     $this->App->navItem(__("View"), "Users", "view", "view", false, $user->id),
 ];
 

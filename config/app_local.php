@@ -66,11 +66,11 @@ return [
      */
     'EmailTransport' => [
         'default' => [
-            'host' => 'localhost',
-            'port' => 25,
-            'username' => null,
-            'password' => null,
-            'client' => null,
+            'host' => 'smtp.sendgrid.net',
+            'port' => 587,
+            'username' => "apikey",
+            'password' => env("MAIL_PASSWORD", null),
+            'client' => "mirageworld.jp",
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
     ],

@@ -42,7 +42,7 @@ echo $this->element("form/static", [
     "appendClass" => ""
 ]);
 echo $this->element("form/static", [
-    "name" => __("Username"),
+    "name" => __("Password"),
     "value" => __("Hide for security"),
     "appendClass" => "text-danger"
 ]);

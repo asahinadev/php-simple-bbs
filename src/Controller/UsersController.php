@@ -8,6 +8,7 @@ use Cake\Event\EventInterface;
  * Users Controller
  *
  * @property \App\Model\Table\UsersTable $Users
+ * @property \App\Controller\Component\UserMailerComponent $UserMailer
  * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class UsersController extends AppController
@@ -33,6 +34,8 @@ class UsersController extends AppController
             'login',
             "add"
         ]);
+
+        $this->loadComponent("UserMailer");
 
     }
 
@@ -84,6 +87,9 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
+
+                // メール送信
+                $this->UserMailer->registMail($user);
 
                 return $this->redirect([
                     'action' => 'index'

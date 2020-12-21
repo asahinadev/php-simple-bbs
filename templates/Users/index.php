@@ -5,6 +5,7 @@ use App\View\AppView;
 /**
  *
  * @var $users User[]
+ * @var $authUser User
  * @var $this AppView
  */
 ?>

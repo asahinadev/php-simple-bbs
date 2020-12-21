@@ -2,8 +2,8 @@
 declare(strict_types = 1);
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
 use Authentication\IdentityInterface;
+use Cake\ORM\Entity;
 
 /**
  * User Entity
@@ -14,6 +14,8 @@ use Authentication\IdentityInterface;
  * @property string $password
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime|null $modified
+ * @property bool $enable
+ * @property bool $admin
  *
  * @property \App\Model\Entity\Post[] $posts
  */
@@ -35,6 +37,8 @@ class User extends Entity implements IdentityInterface
         'password' => true,
         'created' => true,
         'modified' => true,
+        'enable' => true,
+        'admin' => true,
         'posts' => true,
     ];
 

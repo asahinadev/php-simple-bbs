@@ -82,6 +82,12 @@ class UsersTable extends Table
             ->requirePresence('password', 'create')
             ->notEmptyString('password');
 
+        $validator->boolean('enable')
+            ->notEmptyString('enable');
+
+        $validator->boolean('admin')
+            ->notEmptyString('admin');
+
         return $validator;
 
     }
@@ -127,7 +133,9 @@ class UsersTable extends Table
     public function findActive(Query $query, array $options): Query
     {
 
-        return parent::findAll($query, $options);
+        return parent::findAll($query, $options)->andWhere([
+            "enable" => true
+        ]);
 
     }
 

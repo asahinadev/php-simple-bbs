@@ -5,6 +5,7 @@ use App\View\AppView;
 /**
  *
  * @var $user User
+ * @var $authUser User
  * @var $this AppView
  */
 ?>
@@ -46,6 +47,18 @@ echo $this->element("form/static", [
     "value" => __("Hide for security"),
     "appendClass" => "text-danger"
 ]);
+if ($authUser && $authUser->admin) {
+    echo $this->element("form/static", [
+        "name" => __("Enable Flag"),
+        "value" => $user->enable ? __("Yes") : __("No"),
+        "appendClass" => ""
+    ]);
+    echo $this->element("form/static", [
+        "name" => __("Admin Flag"),
+        "value" => $user->admin ? __("Yes") : __("No"),
+        "appendClass" => ""
+    ]);
+}
 echo $this->element("form/static", [
     "name" => __("Created"),
     "value" => $this->Time->format($user->created, "Y/M/d H:m"),

@@ -29,13 +29,28 @@ class CreateUsers extends AbstractMigration
             "length" => 50,
             "comment" => "アカウント"
         ]);
-        $table->addColumn("email", Column::STRING, [
+        $table->addColumn("email", "string", [
             "length" => 255,
             "comment" => "メールアドレス"
         ]);
-        $table->addColumn("password", Column::STRING, [
+        $table->addColumn("password", "string", [
             "length" => 50,
             "comment" => "パスワード"
+        ]);
+        $table->addColumn('enable', 'boolean', [
+            'default' => false,
+            'null' => false,
+            "comment" => "有効判定"
+        ]);
+        $table->addColumn('admin', 'boolean', [
+            'default' => false,
+            'null' => false,
+            "comment" => "管理者"
+        ]);
+        $table->addColumn('code', "string", [
+            'default' => false,
+            'null' => false,
+            "comment" => "認証用コード"
         ]);
         $table->addTimestamps("created", "modified");
 

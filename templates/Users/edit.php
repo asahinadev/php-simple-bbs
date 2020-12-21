@@ -5,6 +5,7 @@ use App\View\AppView;
 /**
  *
  * @var $user User
+ * @var $authUser User
  * @var $this AppView
  */
 ?>
@@ -23,7 +24,7 @@ echo $this->App->tabs($list);
 ?>
 <div class="w-75 mx-auto mt-1">
     <div class="card">
-<?=$this->Form->create($user) ?>
+<?=$this->Form->create($user, [])?>
   <div class="card-header">
     <?= __("User Modify")?>
   </div>
@@ -49,10 +50,13 @@ echo $this->element("form/static",
         "value" => $this->Time->format($user->modified, "Y/M/d H:m"),
         "appendClass" => "bg-light"
     ]);
+if ($authUser && $authUser->admin) {
+    echo $this->Form->control("enable");
+    echo $this->Form->control("admin");
+}
 echo $this->Form->submit(__("Save"));
-;
 ?>
-    </div>
+      </div>
       <div class="card-footer text-muted"></div>
     </div>
     <?=$this->Form->end()?>

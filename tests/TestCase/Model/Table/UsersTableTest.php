@@ -71,4 +71,14 @@ class UsersTableTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
+
+    /**
+     * Test findActive method
+     *
+     * @return void
+     */
+    public function testFindActive(): void
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
 }

@@ -6,6 +6,7 @@ use App\View\AppView;
  *
  * @var $posts Post[]
  * @var $this AppView
+ * @var $authUser User
  */
 ?>
 <div>
@@ -25,7 +26,7 @@ echo $this->App->tabs($list);
         <tr>
           <th><?= __("Id")?></th>
           <th><?= __("Text")?></th>
-          <th><?= __("Username")?></th>
+          <th><?= __("Create Username")?></th>
           <th><?= __("Action")?></th>
         </tr>
       </thead>
@@ -36,12 +37,12 @@ echo $this->App->tabs($list);
           <td><?= nl2br(h($post->text))?></td>
           <td><?=$this->Html->link($post->user->username, ["controller" => "Users","action" => "view",$post->user_id])?></td>
           <td>
-            <?php if ($authUserId == $post->user_id) {?>
+            <?php if ($authUserId == $post->user_id || $authUser->admin ) {?>
               <?=$this->Html->link("E", ["action" => "edit",$post->id], ["class" => "btn btn-primary"]);?>
-            <?php }?>
-            <?=$this->Html->link("V", ["action" => "view",$post->id], ["class" => "btn btn-info"]);?>
-            <?php if ($authUserId == $post->user_id) {?>
+              <?=$this->Html->link("V", ["action" => "view",$post->id], ["class" => "btn btn-info"]);?>
               <?=$this->Form->postLink("D", ["action" => "delete",$post->id],["class" => "btn btn-danger","confirm" => sprintf(__("Do you want to delete this information? #%d"), $post->id)]);?>
+            <?php } else {?>
+              <?=$this->Html->link("V", ["action" => "view",$post->id], ["class" => "btn btn-info"]);?>
             <?php }?>
             </td>
         </tr>

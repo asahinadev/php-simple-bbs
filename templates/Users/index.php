@@ -26,6 +26,8 @@ echo $this->App->tabs($list);
         <tr>
           <th><?= __("Id")?></th>
           <th><?= __("Username")?></th>
+          <th><?= __("Admin")?></th>
+          <th><?= __("Enable")?></th>
           <th><?= __("Created")?></th>
           <th><?= __("Modified")?></th>
           <th><?= __("Action")?></th>
@@ -36,16 +38,18 @@ echo $this->App->tabs($list);
       <tr>
           <td><?= $user->id?></td>
           <td><?= h($user->username)?></td>
+          <td><?= $user->admin?__("Yes"):__("No")?></td>
+          <td><?= $user->enable?__("Yes"):__("No")?></td>
           <td><?= $this->Time->format($user->created, "Y/M/d")?></td>
           <td><?= $this->Time->format($user->modified, "Y/M/d")?></td>
           <td>
             <?=$this->html->link("M", "mailto:" . $user->email, ["class" => "btn btn-warning"]);?>
-            <?php if ($authUserId == $user->id) {?>
+            <?php if ($authUserId == $user->id || $authUser->admin) {?>
               <?=$this->Html->link("E", ["action" => "edit",$user->id], ["class" => "btn btn-primary"]);?>
-            <?php }?>
-            <?=$this->Html->link("V", ["action" => "view",$user->id], ["class" => "btn btn-info"]);?>
-            <?php if ($authUserId == $user->id) {?>
+              <?=$this->Html->link("V", ["action" => "view",$user->id], ["class" => "btn btn-info"]);?>
               <?=$this->Form->postLink("D", ["action" => "delete",$user->id],["class" => "btn btn-danger","confirm" => sprintf(__("Do you want to delete this information? #%d"), $user->id)]);?>
+            <?php } else {?>
+              <?=$this->Html->link("V", ["action" => "view",$user->id], ["class" => "btn btn-info"]);?>
             <?php }?>
             </td>
         </tr>

@@ -21,6 +21,8 @@ use App\Model\Entity\User;
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
 use Psr\Log\LogLevel;
+use Cake\Http\Exception\ForbiddenException;
+use Cake\ORM\Table;
 
 /**
  * Application Controller
@@ -106,6 +108,94 @@ class AppController extends Controller
     {
 
         return $this->Authentication->getIdentity();
+
+    }
+
+    /**
+     * 管理者判定
+     *
+     * @return boolean
+     */
+    protected function checkAdmin()
+    {
+
+        return boolval($this->getIdentityData("admin"));
+
+    }
+
+    /**
+     * 管理者または指定ユーザーか？
+     *
+     * @param integer|string $id
+     * @throws ForbiddenException
+     * @return boolean
+     */
+    protected function checkUserId($id)
+    {
+
+        // 管理者に制限はない
+        if ($this->checkAdmin()) {
+            return true;
+        }
+
+        // 対象のユーザーのみ実施可能
+        if ($id != $this->getIdentityData("id")) {
+            throw new ForbiddenException();
+        }
+
+        return true;
+
+    }
+
+    /**
+     * \Cake\Http\ServerRequest#allowMethod(array)
+     *
+     * @param string ...$methods
+     */
+    protected function allowMethod(...$methods)
+    {
+
+        $this->request->allowMethod($methods);
+
+    }
+
+    /**
+     * \Cake\Http\ServerRequest#is(array)
+     *
+     * @param string ...$methods
+     * @return boolean
+     */
+    protected function isMethod(...$methods)
+    {
+
+        return $this->request->is($methods);
+
+    }
+
+    /**
+     * #redirect
+     *
+     * @param string $action
+     * @param mixed ...$args
+     * @return \Cake\Http\Response
+     */
+    protected function redirectAction($action = "index", ...$args)
+    {
+
+        $url = compact("action");
+
+        foreach ($args as $arg) {
+            $url[] = $arg;
+        }
+
+        return $this->redirect($url);
+
+    }
+
+    protected function getEntity(Table $table, $id, ...$contains)
+    {
+
+        return $table->get($id, compact("contains"));
 
     }
 

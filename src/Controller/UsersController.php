@@ -47,6 +47,12 @@ class UsersController extends AppController
     public function index()
     {
 
+        if (! $this->checkAdmin()) {
+            // 管理ユーザーではない場合は確認画面に遷移
+            $id = $this->getIdentityData("id");
+            return $this->redirectAction("view", $id);
+        }
+
         $users = $this->paginate($this->Users);
 
         $this->set(compact('users'));
@@ -64,11 +70,11 @@ class UsersController extends AppController
     public function view($id = null)
     {
 
-        $user = $this->Users->get($id, [
-            'contain' => [
-                'Posts'
-            ],
-        ]);
+        // 管理者か自分自身の場合のみ操作可能
+        $this->checkUserId($id);
+
+        // 情報の取得
+        $user = $this->getEntity($this->Users, $id, 'Posts');
 
         $this->set(compact('user'));
 
@@ -83,17 +89,20 @@ class UsersController extends AppController
     {
 
         $user = $this->Users->newEmptyEntity();
-        if ($this->request->is('post')) {
+
+        // メソッド判定
+        if ($this->isMethod('post')) {
+
+            // 更新処理
             $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->Users->save($user)) {
+            if ($saveUser = $this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
                 // メール送信
-                $this->UserMailer->registMail($user);
+                $this->UserMailer->registMail($saveUser);
 
-                return $this->redirect([
-                    'action' => 'index'
-                ]);
+                // 変更画面に遷移
+                $this->set(compact('edit', $saveUser->id));
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
@@ -112,30 +121,22 @@ class UsersController extends AppController
     public function edit($id = null)
     {
 
-        $user = $this->Users->get($id, [
-            'contain' => [],
-        ]);
+        // 管理者か自分自身の場合のみ操作可能
+        $this->checkUserId($id);
 
-        //
-        if ($user->id != $this->getIdentityData("id")) {
-            $this->Flash->error(__('Unauthorized Operations.'));
-            return $this->redirect([
-                'action' => 'index'
-            ]);
-        }
+        // 情報の取得
+        $user = $this->getEntity($this->Users, $id);
 
-        if ($this->request->is([
-            'patch',
-            'post',
-            'put'
-        ])) {
+        // メソッド判定
+        if ($this->isMethod('patch', 'post', 'put')) {
+
+            // 更新処理
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
-                return $this->redirect([
-                    'action' => 'index'
-                ]);
+                // 変更画面に遷移
+                $this->set(compact('edit', $id));
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
@@ -154,19 +155,11 @@ class UsersController extends AppController
     public function delete($id = null)
     {
 
-        $this->request->allowMethod([
-            'post',
-            'delete'
-        ]);
-        $user = $this->Users->get($id);
+        // 管理者か自分自身の場合のみ操作可能
+        $this->checkUserId($id);
 
-        //
-        if ($user->id != $this->getIdentityData("id")) {
-            $this->Flash->error(__('Unauthorized Operations.'));
-            return $this->redirect([
-                'action' => 'index'
-            ]);
-        }
+        $this->allowMethod('post', 'delete');
+        $user = $this->getEntity($this->Users, $id);
 
         if ($this->Users->delete($user)) {
             $this->Flash->success(__('The user has been deleted.'));
@@ -175,9 +168,7 @@ class UsersController extends AppController
             $this->Flash->error(__('The user could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect([
-            'action' => 'index'
-        ]);
+        return $this->redirectAction('index');
 
     }
 
@@ -206,16 +197,19 @@ class UsersController extends AppController
 
     }
 
+
+    /**
+     * Logout method
+     *
+     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
     public function logout()
     {
 
         $this->Authentication->logout();
-
         $this->Flash->success(__('logged out'));
-
-        return $this->redirect([
-            'action' => 'login'
-        ]);
+        return $this->redirectAction('login');
 
     }
 
